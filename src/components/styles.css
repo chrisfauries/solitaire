@@ -1,0 +1,27 @@
+.board  {
+    display: flex;
+    width: 1500px;
+    flex-wrap: wrap;
+}
+
+.card {
+    width: 50px;
+    height: 100px;
+    border: 1px black solid;
+    border-radius: 5px;
+    margin: 28px;
+    font-size: 9px;
+}
+
+.foundation_container {
+    display: flex;
+}
+
+.foundation {
+    width: 50px;
+    height: 100px;
+    border: 1px black solid;
+    border-radius: 5px;
+    margin: 28px;
+    font-size: 9px;
+}
