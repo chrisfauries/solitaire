@@ -3,14 +3,16 @@ import { useRecoilValue } from "recoil";
 import { DataType, FOUNDATION } from "../data/constants";
 import foundationState from "../state/foundation";
 
-interface Foundation {
+const Foundation: React.FC<{
   foundation: FOUNDATION;
-}
-
-const Foundation: React.FC<Foundation> = ({ foundation }) => {
+}> = ({ foundation }) => {
   const foundationArray = useRecoilValue(foundationState.get(foundation));
   return (
-    <div className="foundation" data-type={DataType[DataType.FOUNDATION]} data-foundation={foundation}>
+    <div
+      className="foundation"
+      data-type={DataType[DataType.FOUNDATION]}
+      data-foundation={foundation}
+    >
       {JSON.stringify(foundationArray)}
     </div>
   );

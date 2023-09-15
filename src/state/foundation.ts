@@ -1,9 +1,6 @@
 import {
   atom,
-  GetRecoilValue,
   selector,
-  SelectorCallbackInterface,
-  SetRecoilState,
 } from "recoil";
 import memo from "memoizee";
 import {
@@ -12,7 +9,7 @@ import {
   FOUNDATION,
   RANK,
 } from "../data/constants";
-import { getNextRank, getRank, getSuit } from "../data/utils";
+import { getNextHigherRank, getRank, getSuit } from "../data/utils";
 
 type FoundationAtom = {
   [key in FOUNDATION]: CARD[];
@@ -54,7 +51,7 @@ const setFoundation = selector<SetFoundation>({
       // Must be next rank with matching suit
       const currentCard = foundationArray[foundationArray.length - 1];
       if (
-        getNextRank(getRank(currentCard)) !== newCardRank ||
+        getNextHigherRank(getRank(currentCard)) !== newCardRank ||
         getSuit(currentCard) !== getSuit(card)
       ) {
         return; // no-op

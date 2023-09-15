@@ -4,10 +4,12 @@ import CARD from "../components/Card";
 import { DECK, FOUNDATION } from "../data/constants";
 import Foundation from "./Foundation";
 import { getShuffledDeck } from "../data/utils";
+import Stock from "./Stock";
 
 const Board = () => {
   return (
     <>
+      <Stock />
       <div className="foundation_container">
         <Foundation foundation={FOUNDATION.ONE} />
         <Foundation foundation={FOUNDATION.TWO} />

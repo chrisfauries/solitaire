@@ -7,47 +7,31 @@ import {
   RANK,
   SPADES,
   SUIT,
+  CARD_DATA_MAP,
 } from "./constants";
 
-export const getBlacks = (cards: Set<CARD>) => {
-  const blacks = new Set<CARD>();
-  cards.forEach((card) => {
-    if (CARD[card].includes("CLUBS") || CARD[card].includes("SPADES")) {
-      blacks.add(card);
-    }
-  });
-  return blacks;
-};
+export const getBlacks = (cards: Set<CARD>) =>
+  new Set<CARD>(Array.from(cards).filter((card) => !isRed(card)));
 
-export const getReds = (cards: Set<CARD>) => {
-  const reds = new Set<CARD>();
-  cards.forEach((card) => {
-    if (CARD[card].includes("DIAMONDS") || CARD[card].includes("HEARTS")) {
-      reds.add(card);
-    }
-  });
-  return reds;
-};
+export const getReds = (cards: Set<CARD>) =>
+  new Set<CARD>(Array.from(cards).filter((card) => isRed(card)));
 
-export const getSuit = (card: CARD) =>
-  BLACKS.has(card)
-    ? SPADES.has(card)
-      ? SUIT.SPADE
-      : SUIT.CLUB
-    : HEARTS.has(card)
-    ? SUIT.HEART
-    : SUIT.DIAMOND;
+const isRed = (card: CARD) =>
+  CARD_DATA_MAP[card].suit === SUIT.DIAMOND ||
+  CARD_DATA_MAP[card].suit === SUIT.HEART;
 
-// TODO: this could be better
-export const getRank = (card: CARD) =>
-  RANK[
-    Object.values(RANK).filter(
-      (rank) => rank === CARD[card].split("_")[0]
-    )[0] as keyof typeof RANK
-  ];
+export const getSuit = (card: CARD) => CARD_DATA_MAP[card].suit;
+export const getRank = (card: CARD) => CARD_DATA_MAP[card].rank;
 
-export const getNextRank = (rank: RANK) => rank === RANK.KING ? RANK.ACE : rank + 1;
+// used for foundations, no wrap-around
+// null represents no rank higher than KING
+export const getNextHigherRank = (rank: RANK) =>
+  rank === RANK.KING ? null : rank + 1;
 
+// used for foundations, no wrap-around
+// null represents no rank lower than ACE
+export const getNextLowerRank = (rank: RANK) =>
+  rank === RANK.ACE ? null : rank - 1;
 
 export const getCardFromString = (value: string): CARD => parseInt(value);
 
