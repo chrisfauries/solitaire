@@ -5,6 +5,8 @@ import { DECK, FOUNDATION } from "../data/constants";
 import Foundation from "./Foundation";
 import { getShuffledDeck } from "../data/utils";
 import Stock from "./Stock";
+import { useRecoilState, useRecoilValue } from "recoil";
+import dragState from '../state/drag';
 
 const Board = () => {
   return (

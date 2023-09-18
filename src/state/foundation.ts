@@ -1,7 +1,4 @@
-import {
-  atom,
-  selector,
-} from "recoil";
+import { atom, selector } from "recoil";
 import memo from "memoizee";
 import {
   CARD,
@@ -10,6 +7,7 @@ import {
   RANK,
 } from "../data/constants";
 import { getNextHigherRank, getRank, getSuit } from "../data/utils";
+import dragState from "../state/drag";
 
 type FoundationAtom = {
   [key in FOUNDATION]: CARD[];
@@ -62,6 +60,8 @@ const setFoundation = selector<SetFoundation>({
       ...foundations,
       [foundation]: [...foundationArray, card],
     });
+
+    set(dragState.success, undefined);
   },
 });
 

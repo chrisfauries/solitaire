@@ -1,5 +1,13 @@
-const handleFoundationDragOver = (e: DragEvent) => {
-    e.preventDefault();
-}
+import DragOverEventHandler from ".";
 
-export default handleFoundationDragOver;
+
+
+export default class FoundationDragOverEventHandler extends DragOverEventHandler {
+    constructor(dragEvent: DragEvent) {
+        super(dragEvent);
+    }
+
+    handle(): void {
+        super.handle();
+    }
+}

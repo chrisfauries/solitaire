@@ -1,23 +1,25 @@
 import { SetterOrUpdater } from "recoil";
-import { CARD, FOUNDATION } from "../../data/constants";
-import { getIntAttribute } from "../../data/utils";
+import DropEventHandler from ".";
+import { FOUNDATION } from "../../data/constants";
+import { getCardFromDragEvent, getIntAttribute } from "../../data/utils";
 import { SetFoundation } from "../../state/foundation";
 
 const getFoundationFromDragEvent = (e: DragEvent) =>
   getIntAttribute(e.target, "data-foundation") as FOUNDATION;
 
-const getCardFromDragEvent = (e:DragEvent) =>  {
-    const data = e.dataTransfer?.getData("text/plain");
-    return parseInt(data!) as CARD;
+export default class FoundationDropEventHandler extends DropEventHandler {
+  setFoundation: SetterOrUpdater<SetFoundation>;
+  constructor(
+    dragEvent: DragEvent,
+    setFoundation: SetterOrUpdater<SetFoundation>
+  ) {
+    super(dragEvent);
+    this.setFoundation = setFoundation;
+  }
+
+  handle(): void {
+    const foundation = getFoundationFromDragEvent(this.dragEvent);
+    const card = getCardFromDragEvent(this.dragEvent);
+    this.setFoundation({ foundation, card });
+  }
 }
-
-const handleFoundationDrop = (
-  e: DragEvent,
-  setFoundation: SetterOrUpdater<SetFoundation>
-) => {
-  const foundation = getFoundationFromDragEvent(e);
-  const card = getCardFromDragEvent(e);
-  setFoundation({foundation, card});
-};
-
-export default handleFoundationDrop;

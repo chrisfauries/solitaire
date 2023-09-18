@@ -1,5 +1,11 @@
-const handleCardClick = (e: Event) => {
-    console.log('card click event',e)
-}
+import ClickEventHandler from ".";
 
-export default handleCardClick;
+export default class CardClickEventHandler extends ClickEventHandler {
+  constructor(mouseEvent: MouseEvent) {
+    super(mouseEvent);
+  }
+
+  handle(): void {
+    // no-op
+  }
+}

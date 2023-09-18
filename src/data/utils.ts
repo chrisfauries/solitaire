@@ -35,7 +35,11 @@ export const getNextLowerRank = (rank: RANK) =>
 
 export const getCardFromString = (value: string): CARD => parseInt(value);
 
-export const tryGetDataType = (el: Element) => {
+export const tryGetDataType = (el: Element | undefined | null) => {
+  if (!el) {
+    return null;
+  }
+
   const dataType = el.getAttribute("data-type");
 
   if (!dataType) {
@@ -73,3 +77,17 @@ export const getIntAttribute = (
   eventTarget: EventTarget | null,
   attributeName: string
 ) => parseInt(getAttribute(eventTarget, attributeName));
+
+export const getCardAttributeFromDragEvent = (e: DragEvent) =>
+  getIntAttribute(e.target, "data-card") as CARD;
+
+export const setCardOnTransferData = (e: DragEvent) => {
+  const card = getCardAttributeFromDragEvent(e);
+  e.dataTransfer?.setData("text/plain", card.toString());
+};
+
+
+export const getCardFromDragEvent = (e:DragEvent) =>  {
+  const data = e.dataTransfer?.getData("text/plain");
+  return parseInt(data!) as CARD;
+}

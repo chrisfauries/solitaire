@@ -1,38 +1,77 @@
 import { SetterOrUpdater } from "recoil";
 import { DataType } from "../data/constants";
 import { tryGetDataType } from "../data/utils";
-import handleCardDragStart from "../events/onDragStart/card";
 import { SetFoundation } from "../state/foundation";
-import handleCardClick from "./onClick/card";
-import handleFoundationDragOver from "./onDragOver/foundation";
-import handleFoundationDrop from "./onDrop/foundation";
+import { EventHandler } from "./eventHandler";
+import CardClickEventHandler from "./onClick/card";
+import StockClickEventHandler from "./onClick/stock";
+import CardDragEndEventHandler from "./onDragEnd/card";
+import WaistDragEndEventHandler from "./onDragEnd/waist";
+import FoundationDragEnterEventHandler from "./onDragEnter/foundation";
+import FoundationDragLeaveEventHandler from "./onDragLeave/foundation";
+import FoundationDragOverEventHandler from "./onDragOver/foundation";
+import CardDragStartEventHandler from "./onDragStart/card";
+import WaistDragStartEventHandler from "./onDragStart/waist";
+import FoundationDropEventHandler from "./onDrop/foundation";
 
 type HandlerMap = {
   [eventType in keyof DocumentEventMap]: Partial<{
-    [type in DataType]: (e: DocumentEventMap[eventType]) => void;
+    [type in DataType]: (e: DocumentEventMap[eventType]) => EventHandler;
   }>;
 };
 
 const getHandlerMap = (
-  setFoundation: SetterOrUpdater<SetFoundation>
+  setFoundation: SetterOrUpdater<SetFoundation>,
+  advanceStock: SetterOrUpdater<void>,
+  setSourceDrag: SetterOrUpdater<HTMLElement>,
+  setDestinationDrag: SetterOrUpdater<HTMLElement>,
+  clearDestinationDrag: SetterOrUpdater<void>,
+  clearDrag: SetterOrUpdater<void>,
+  removeCard: SetterOrUpdater<void>
 ): Partial<HandlerMap> => ({
   dragstart: {
-    [DataType.CARD]: (e) => handleCardDragStart(e),
-  },
-  click: {
-    [DataType.CARD]: (e) => handleCardClick(e),
+    [DataType.CARD]: (dragEvent) =>
+      new CardDragStartEventHandler(dragEvent, setSourceDrag),
+    [DataType.WAIST]: (dragEvent) =>
+      new WaistDragStartEventHandler(dragEvent, setSourceDrag),
   },
   dragover: {
-    [DataType.FOUNDATION]: (e) => handleFoundationDragOver(e),
+    [DataType.FOUNDATION]: (dragEvent) =>
+      new FoundationDragOverEventHandler(dragEvent),
+  },
+  dragenter: {
+    [DataType.FOUNDATION]: (dragEvent) =>
+      new FoundationDragEnterEventHandler(dragEvent, setDestinationDrag),
+  },
+  dragleave: {
+    [DataType.FOUNDATION]: (dragEvent) =>
+      new FoundationDragLeaveEventHandler(dragEvent, clearDestinationDrag),
   },
   drop: {
-    [DataType.FOUNDATION]: (e) => handleFoundationDrop(e, setFoundation),
+    [DataType.FOUNDATION]: (dragEvent) =>
+      new FoundationDropEventHandler(dragEvent, setFoundation),
+  },
+  dragend: {
+    [DataType.WAIST]: (dragEvent) =>
+      new WaistDragEndEventHandler(dragEvent, clearDrag, removeCard),
+    [DataType.CARD]: (dragEvent) =>
+      new CardDragEndEventHandler(dragEvent, clearDrag),
+  },
+  click: {
+    [DataType.CARD]: (e) => new CardClickEventHandler(e),
+    [DataType.STOCK]: (e) => new StockClickEventHandler(e, advanceStock),
   },
 });
 
 const controller =
   <K extends keyof DocumentEventMap>(
-    setFoundation: SetterOrUpdater<SetFoundation>
+    setFoundation: SetterOrUpdater<SetFoundation>,
+    advanceStock: SetterOrUpdater<void>,
+    setSourceDrag: SetterOrUpdater<HTMLElement>,
+    setDestinationDrag: SetterOrUpdater<HTMLElement>,
+    clearDestinationDrag: SetterOrUpdater<void>,
+    clearDrag: SetterOrUpdater<void>,
+    removeCard: SetterOrUpdater<void>
   ) =>
   (e: DocumentEventMap[K], type: K) => {
     const dataType = tryGetDataType(e.target as Element);
@@ -41,7 +80,17 @@ const controller =
       return;
     }
 
-    getHandlerMap(setFoundation)[type]?.[dataType]?.(e);
+    getHandlerMap(
+      setFoundation,
+      advanceStock,
+      setSourceDrag,
+      setDestinationDrag,
+      clearDestinationDrag,
+      clearDrag,
+      removeCard
+    )
+      [type]?.[dataType]?.(e)
+      ?.handle();
   };
 
 export default controller;

@@ -3,6 +3,8 @@ import { getBlacks, getReds } from "./utils";
 export enum DataType {
   CARD,
   FOUNDATION,
+  STOCK,
+  WAIST
 }
 
 export enum CARD {
