@@ -1,7 +1,6 @@
 import { SetterOrUpdater } from "recoil";
 import { DataType } from "../data/constants";
 import { tryGetDataType } from "../data/utils";
-import { SetFoundation } from "../state/foundation";
 import { EventHandler } from "./eventHandler";
 import CardClickEventHandler from "./onClick/card";
 import StockClickEventHandler from "./onClick/stock";
@@ -21,7 +20,7 @@ type HandlerMap = {
 };
 
 const getHandlerMap = (
-  setFoundation: SetterOrUpdater<SetFoundation>,
+  setFoundation: SetterOrUpdater<void>,
   advanceStock: SetterOrUpdater<void>,
   setSourceDrag: SetterOrUpdater<HTMLElement>,
   setDestinationDrag: SetterOrUpdater<HTMLElement>,
@@ -58,14 +57,15 @@ const getHandlerMap = (
       new CardDragEndEventHandler(dragEvent, clearDrag),
   },
   click: {
-    [DataType.CARD]: (e) => new CardClickEventHandler(e),
-    [DataType.STOCK]: (e) => new StockClickEventHandler(e, advanceStock),
+    [DataType.CARD]: (mouseEvent) => new CardClickEventHandler(mouseEvent),
+    [DataType.STOCK]: (mouseEvent) =>
+      new StockClickEventHandler(mouseEvent, advanceStock),
   },
 });
 
 const controller =
   <K extends keyof DocumentEventMap>(
-    setFoundation: SetterOrUpdater<SetFoundation>,
+    setFoundation: SetterOrUpdater<void>,
     advanceStock: SetterOrUpdater<void>,
     setSourceDrag: SetterOrUpdater<HTMLElement>,
     setDestinationDrag: SetterOrUpdater<HTMLElement>,

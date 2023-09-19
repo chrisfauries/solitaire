@@ -1,6 +1,5 @@
 import { SetterOrUpdater } from "recoil";
 import { EventHandler } from "../eventHandler";
-import { setCardOnTransferData } from "../../data/utils";
 
 export default class DragStartEventHandler extends EventHandler {
   dragEvent: DragEvent;
@@ -16,6 +15,5 @@ export default class DragStartEventHandler extends EventHandler {
 
   handle() {
     this.setSourceDrag(this.dragEvent.target as HTMLElement);
-    setCardOnTransferData(this.dragEvent);
   }
 }

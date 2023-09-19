@@ -6,7 +6,12 @@ import {
   FOUNDATION,
   RANK,
 } from "../data/constants";
-import { getNextHigherRank, getRank, getSuit } from "../data/utils";
+import {
+  Attribute,
+  getNextHigherRank,
+  getRank,
+  getSuit,
+} from "../data/utils";
 import dragState from "../state/drag";
 
 type FoundationAtom = {
@@ -25,16 +30,14 @@ const getFoundation = memo((foundation: FOUNDATION) =>
   })
 );
 
-export interface SetFoundation {
-  foundation: FOUNDATION;
-  card: CARD;
-}
-
-const setFoundation = selector<SetFoundation>({
+const setFoundation = selector<void>({
   key: "foundation/set-foundation",
-  get: () => ({ foundation: FOUNDATION.ONE, card: CARD.ACE_OF_CLUBS }),
-  set: ({ set, get }, args) => {
-    const { foundation, card } = args as SetFoundation;
+  get: () => {},
+  set: ({ set, get }) => {
+    const drag = get(dragState.get);
+    const foundation = Attribute.getFoundation(drag?.destination);
+    const card = Attribute.getCard(drag?.source);
+
     const foundations = get(foundationsAtom);
     const foundationArray = foundations[foundation];
 

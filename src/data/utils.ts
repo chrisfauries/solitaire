@@ -1,3 +1,4 @@
+import { validateHeaderName } from "http";
 import {
   BLACKS,
   CARD,
@@ -8,6 +9,7 @@ import {
   SPADES,
   SUIT,
   CARD_DATA_MAP,
+  FOUNDATION,
 } from "./constants";
 
 export const getBlacks = (cards: Set<CARD>) =>
@@ -68,26 +70,50 @@ export const getShuffledDeck = (): CARD[] => {
   return deck;
 };
 
-export const getAttribute = (
-  eventTarget: EventTarget | null,
-  attributeName: string
-) => (eventTarget as Element | null)?.getAttribute?.(attributeName) ?? "";
+export class Attribute {
+  private static CARD_DATA_ATTRIBUTE = "data-card";
+  private static CARD_ENUM_TOTAL = 52;
 
-export const getIntAttribute = (
-  eventTarget: EventTarget | null,
-  attributeName: string
-) => parseInt(getAttribute(eventTarget, attributeName));
+  private static FOUNDATION_DATA_ATTRIBUTE = "data-foundation";
+  private static FOUNDATION_ENUM_TOTAL = 4;
 
-export const getCardAttributeFromDragEvent = (e: DragEvent) =>
-  getIntAttribute(e.target, "data-card") as CARD;
+  static getFoundation(eventTarget: EventTarget | null | undefined) {
+    return this.validate<FOUNDATION>(
+      this.getInt(eventTarget, this.FOUNDATION_DATA_ATTRIBUTE),
+      this.FOUNDATION_ENUM_TOTAL
+    );
+  }
 
-export const setCardOnTransferData = (e: DragEvent) => {
-  const card = getCardAttributeFromDragEvent(e);
-  e.dataTransfer?.setData("text/plain", card.toString());
-};
+  static getCard(eventTarget: EventTarget | null | undefined) {
+    return this.validate<CARD>(
+      this.getInt(eventTarget, this.CARD_DATA_ATTRIBUTE),
+      this.CARD_ENUM_TOTAL
+    );
+  }
 
+  private static getInt(
+    eventTarget: EventTarget | null | undefined,
+    attributeName: string
+  ) {
+    return parseInt(this.get(eventTarget, attributeName));
+  }
 
-export const getCardFromDragEvent = (e:DragEvent) =>  {
-  const data = e.dataTransfer?.getData("text/plain");
-  return parseInt(data!) as CARD;
+  private static get(
+    eventTarget: EventTarget | null | undefined,
+    attributeName: string
+  ) {
+    return (eventTarget as Element | null)?.getAttribute?.(attributeName) ?? "";
+  }
+
+  private static validate<T>(value: number, max: number): T {
+    if (isNaN(value)) {
+      throw new TypeError("unable to read data value from element");
+    }
+
+    if (value >= max) {
+      throw new RangeError("type does not fit in range");
+    }
+
+    return value as T;
+  }
 }

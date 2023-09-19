@@ -1,7 +1,9 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { DataType, FOUNDATION } from "../data/constants";
+import { CARD, DataType, FOUNDATION } from "../data/constants";
 import foundationState from "../state/foundation";
+
+import imag from "../static/cards/fronts/clubs_2.svg";
 
 const Foundation: React.FC<{
   foundation: FOUNDATION;
@@ -13,7 +15,8 @@ const Foundation: React.FC<{
       data-type={DataType[DataType.FOUNDATION]}
       data-foundation={foundation}
     >
-      {JSON.stringify(foundationArray)}
+
+      <img src={imag} alt={CARD[foundationArray[foundationArray.length - 1]]} />
     </div>
   );
 };
