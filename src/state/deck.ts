@@ -25,7 +25,7 @@ const removeCard = selector({
       return; // no-op
     }
 
-    if (tryGetDataType(drag?.source) !== DataType.WAIST) {
+    if (tryGetDataType(drag?.source) !== DataType.WAIST) { // is this always true???
       return; // no-op
     }
 

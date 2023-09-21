@@ -9,6 +9,12 @@ export interface Drag {
 const dragAtom = atom<Drag | null>({
   key: "drag/drag-atom",
   default: null,
+  effects: [({onSet,getPromise}) => {
+    onSet(async() => {
+        const atom = await getPromise(dragAtom);
+        console.log(atom)
+    })
+  }]
 });
 
 const source = selector<HTMLElement>({

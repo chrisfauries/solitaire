@@ -3,21 +3,23 @@ import { useRecoilValue } from "recoil";
 import { CARD, DataType, FOUNDATION } from "../data/constants";
 import foundationState from "../state/foundation";
 
-import imag from "../static/cards/fronts/clubs_2.svg";
+import CardArt from "../data/cardArt";
 
 const Foundation: React.FC<{
   foundation: FOUNDATION;
 }> = ({ foundation }) => {
   const foundationArray = useRecoilValue(foundationState.get(foundation));
+  const topCard = foundationArray[foundationArray.length - 1];
   return (
-    <div
+    <img
       className="foundation"
       data-type={DataType[DataType.FOUNDATION]}
       data-foundation={foundation}
-    >
-
-      <img src={imag} alt={CARD[foundationArray[foundationArray.length - 1]]} />
-    </div>
+      data-card={topCard}
+      src={CardArt.getFront(topCard)}
+      draggable={true}
+      alt={CARD[topCard]}
+    />
   );
 };
 

@@ -6,12 +6,7 @@ import {
   FOUNDATION,
   RANK,
 } from "../data/constants";
-import {
-  Attribute,
-  getNextHigherRank,
-  getRank,
-  getSuit,
-} from "../data/utils";
+import { Attribute, getNextHigherRank, getRank, getSuit } from "../data/utils";
 import dragState from "../state/drag";
 
 type FoundationAtom = {
@@ -68,7 +63,36 @@ const setFoundation = selector<void>({
   },
 });
 
+const removeCard = selector<void>({
+  key: "foundation/remove-card",
+  get: () => {},
+  set: ({ set, get }) => {
+    const drag = get(dragState.get);
+
+    if (!drag?.success) {
+      return; // no-op
+    }
+
+    const foundation = Attribute.getFoundation(drag?.source);
+    const foundations = get(foundationsAtom);
+    const foundationArray = [...foundations[foundation]];
+
+    if (!foundationArray.length) {
+      // is this possible?
+      return; // no-op
+    }
+
+    foundationArray.pop(); // It's always the last item in stack
+
+    set(foundationsAtom, {
+      ...foundations,
+      [foundation]: foundationArray,
+    });
+  },
+});
+
 export default {
   get: getFoundation,
   set: setFoundation,
+  removeCard,
 };

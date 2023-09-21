@@ -1,10 +1,11 @@
 import { getBlacks, getReds } from "./utils";
 
 export enum DataType {
-  CARD,
   FOUNDATION,
   STOCK,
-  WAIST
+  WAIST,
+  DEPOT,
+  DEPOT_CARD
 }
 
 export enum CARD {
@@ -176,3 +177,23 @@ export const DEFAULT_FOUNDATIONS_ATOM = {
   [FOUNDATION.THREE]: [],
   [FOUNDATION.FOUR]: [],
 };
+
+export enum DEPOT {
+  ONE,
+  TWO,
+  THREE,
+  FOUR,
+  FIVE,
+  SIX,
+  SEVEN,
+}
+
+export const DEFAULT_DEPOTS_ATOM = {
+  [DEPOT.ONE]: [],
+  [DEPOT.TWO]: [],
+  [DEPOT.THREE]: [],
+  [DEPOT.FOUR]: [],
+  [DEPOT.FIVE]: [],
+  [DEPOT.SIX]: [],
+  [DEPOT.SEVEN]: [],
+}

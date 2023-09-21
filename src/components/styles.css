@@ -1,27 +1,59 @@
-.board  {
-    display: flex;
-    width: 1500px;
-    flex-wrap: wrap;
+body {
+  background-color: darkgrey;
+}
+
+.board {
+  display: flex;
+  width: 1500px;
+  flex-wrap: wrap;
 }
 
 .card {
-    width: 50px;
-    height: 100px;
-    border: 1px black solid;
-    border-radius: 5px;
-    margin: 28px;
-    font-size: 9px;
+  width: 50px;
+  height: 100px;
+  border: 1px black solid;
+  border-radius: 5px;
+  margin: 28px;
+  font-size: 9px;
 }
 
 .foundation-container {
-    display: flex;
+  display: flex;
 }
 
 .foundation {
-    width: 50px;
-    height: 100px;
-    border: 1px black solid;
-    border-radius: 5px;
-    margin: 28px;
-    font-size: 9px;
+  width: 50px;
+  height: 100px;
+  border: 1px black solid;
+  border-radius: 5px;
+  margin: 28px;
+  font-size: 9px;
+}
+
+.tableau {
+  display: flex;
+}
+
+.depot {
+  width: 50px;
+  height: 100px;
+  border: 1px black solid;
+  border-radius: 5px;
+  margin: 28px;
+  font-size: 9px;
+}
+
+.depot-card {
+  margin-top: var(--marginTop);
+  width: 50px;
+  height: 100px;
+  border: 1px black solid;
+  border-radius: 5px;
+  font-size: 9px;
+  position: absolute;
+}
+
+.card-image {
+  width: 64px;
+  height: 96px;
 }

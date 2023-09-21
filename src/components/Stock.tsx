@@ -3,6 +3,7 @@ import deckState from "../state/deck";
 import { useRecoilValue } from "recoil";
 import stockState from "../state/stock";
 import { CARD, DataType } from "../data/constants";
+import CardArt from "../data/cardArt";
 
 const Stock = () => {
   const deck = useRecoilValue(deckState.get);
@@ -14,14 +15,14 @@ const Stock = () => {
       <div data-type={DataType[DataType.STOCK]} className="card">
         BACK
       </div>
-      <div
+      <img
+        src={CardArt.getFront(drawCard)}
+        alt={CARD[drawCard]}
         data-type={DataType[DataType.WAIST]}
         className="card"
         data-card={drawCard}
         draggable={true}
-      >
-        {CARD[drawCard]}
-      </div>
+      />
     </div>
   );
 };

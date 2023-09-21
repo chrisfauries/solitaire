@@ -6,35 +6,46 @@ import stockState from "../../state/stock";
 import dragState from "../../state/drag";
 import { useSetRecoilState } from "recoil";
 import deckState from "../../state/deck";
+import depotState from "../../state/depot"
 
 const EventBoundary: React.FC<PropsWithChildren> = ({ children }) => {
   const setFoundationState = useSetRecoilState(foundation.set);
+  const removeFoundationCard = useSetRecoilState(foundation.removeCard);
+  const setDepotState = useSetRecoilState(depotState.set);
+  const removeDepotCard = useSetRecoilState(depotState.removeCard);
   const advanceStock = useSetRecoilState(stockState.advance);
   const setSourceDrag = useSetRecoilState(dragState.source);
   const setDestinationDrag = useSetRecoilState(dragState.destination);
   const clearDestinationDrag = useSetRecoilState(dragState.clearDestination);
   const clearDrag = useSetRecoilState(dragState.clear);
-  const removeCard = useSetRecoilState(deckState.remove);
+  const removeWaistCard = useSetRecoilState(deckState.remove);
+
 
   const handler = useMemo(
     () =>
       controller(
         setFoundationState,
+        setDepotState,
         advanceStock,
         setSourceDrag,
         setDestinationDrag,
         clearDestinationDrag,
         clearDrag,
-        removeCard
+        removeWaistCard,
+        removeDepotCard,
+        removeFoundationCard
       ),
     [
       setFoundationState,
+      setDepotState,
       advanceStock,
       setSourceDrag,
       setDestinationDrag,
       clearDestinationDrag,
       clearDrag,
-      removeCard,
+      removeWaistCard,
+      removeDepotCard,
+      removeFoundationCard
     ]
   );
 

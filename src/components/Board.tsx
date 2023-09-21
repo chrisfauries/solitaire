@@ -3,14 +3,15 @@ import "./styles.css";
 import Stock from "./Stock";
 import Foundations from "./Foundations";
 import Test from "./Test";
+import Tableau from "./Tableau";
 
 const Board = () => {
   return (
     <>
-    <Test />
-
+      <Test />
       <Stock />
       <Foundations />
+      <Tableau />
     </>
   );
 };

@@ -10,6 +10,7 @@ import {
   SUIT,
   CARD_DATA_MAP,
   FOUNDATION,
+  DEPOT,
 } from "./constants";
 
 export const getBlacks = (cards: Set<CARD>) =>
@@ -77,6 +78,11 @@ export class Attribute {
   private static FOUNDATION_DATA_ATTRIBUTE = "data-foundation";
   private static FOUNDATION_ENUM_TOTAL = 4;
 
+  private static DEPOT_DATA_ATTRIBUTE = "data-depot";
+  private static DEPOT_ENUM_TOTAL = 7;
+
+  private static IS_DROPABLE_ATTRIBUTE = "data-isdropable";
+
   static getFoundation(eventTarget: EventTarget | null | undefined) {
     return this.validate<FOUNDATION>(
       this.getInt(eventTarget, this.FOUNDATION_DATA_ATTRIBUTE),
@@ -89,6 +95,17 @@ export class Attribute {
       this.getInt(eventTarget, this.CARD_DATA_ATTRIBUTE),
       this.CARD_ENUM_TOTAL
     );
+  }
+
+  static getDepot(eventTarget: EventTarget | null | undefined) {
+    return this.validate<DEPOT>(
+      this.getInt(eventTarget, this.DEPOT_DATA_ATTRIBUTE),
+      this.DEPOT_ENUM_TOTAL
+    );
+  }
+
+  static getIsDropable(eventTarget: EventTarget | null | undefined) {
+    return this.get(eventTarget, this.IS_DROPABLE_ATTRIBUTE) === 'true';
   }
 
   private static getInt(

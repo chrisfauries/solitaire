@@ -1,19 +1,19 @@
 import { SetterOrUpdater } from "recoil";
 import { DragEndEventHandler } from ".";
 
-export default class WaistDragEndEventHandler extends DragEndEventHandler {
-    removeWaistCard: SetterOrUpdater<void>;
+export default class DepotCardDragEndEventHandler extends DragEndEventHandler {
+  removeDepotCard: SetterOrUpdater<void>;
   constructor(
     dragEvent: DragEvent,
     clearDrag: SetterOrUpdater<void>,
-    removeWaistCard: SetterOrUpdater<void>
+    removeDepotCard: SetterOrUpdater<void>
   ) {
     super(dragEvent, clearDrag);
-    this.removeWaistCard = removeWaistCard;
+    this.removeDepotCard = removeDepotCard;
   }
 
   handle() {
-    this.removeWaistCard();
+    this.removeDepotCard();
     super.handle();
   }
 }
